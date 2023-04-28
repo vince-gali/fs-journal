@@ -17,6 +17,27 @@ container class provides extra margin on sides
 container-fluid aligns along margins
 
 <!-- starting html using bootstrap -->
+
+align-items-center moves item vertically
+justify-content moves items horizontally
+
+elevation-5 gives a card the drop shadow effect
+
+avoid d-flex on columns
+use text-center on images to center image within column
+
+position-absolute (on child element) (position: absolute; in css -->>  class in css)
+position-relative (use on parent element)
+---see css tricks for visual
+
+in css (when swapping images from desktop to mobile) (Media rule)
+@media(max-width: 768px) {
+    .main-img{
+        backgorund-image: url(new image url)
+    }
+}
+
+
 bootstrap link inserted before style.css link (use cdn css link from bootstrap site)
 
 assign container-fluid class to header
