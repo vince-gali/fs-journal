@@ -9,7 +9,7 @@
     > | A pseudo-class is something that is added to an element such as a button that will change its state when a mouse is hovering over that button |
 
 04. What is ***specificity*** and how might you use it to your benefit?
-    > | ANSWER HERE |
+    > | It is a way to communicate between the coder  |
 
 05. What problems do you think you could run into if you over-utilized the `!important` feature?
     > | Problems could occur if you used the !important feature and neglect to include other styling rules that are crucial to the code. essentially could break the code and end product would not result in what youd like  |
@@ -25,7 +25,7 @@
     > | Three components are selector, property, and value |
 
 07. How do you think good design influences people when visiting a website, and what sorts of things could you convey through design alone?
-    > | ANSWER HERE |
+    > | A lot of the time, a website with a good design can be a direct reflection of the business itself. When a consumer visits a business' website that is functional and aesthectically pleasing they are more likely to return and even share it with others. Especially when the website is very easy to use. Good design alone can convey culture, as well as their ability to provide quality services to their consumer   |
 
 08. What is the purpose of ***wireframing***?
     > | The purpose of wireframing is to create a skeleton of the design. It is a way to get the ball rolling with your code, from which you are able to build upon with more intricate details. It is a relatively minimal approach similar to a "drawing board" |
@@ -34,7 +34,7 @@
     > | Yes i think wireframes are worth the time, energy and effort |
 
 10. Define the display `:flex property:`
-    > | ANSWER HERE |
+    > | The property allows children items to be flexible within a parent container. Such as changing the direction, order, positioning and alignment. |
 
 11. What `CSS` properties affect the size of a box model?
-    > | ANSWER HERE |
+    > | Height, width, padding and border / content-box and border-box |
