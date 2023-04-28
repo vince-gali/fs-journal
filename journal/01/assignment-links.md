@@ -2,5 +2,5 @@
 
 * **[Repo](https://github.com/vince-gali/Cool_site)**
 * **[Repo](https://github.com/vince-gali/clone_site)**
-* **[Repo](https://github.com/vince-gali/<ASSIGNMENT_REPO>)**
+* **[Repo](https://github.com/vince-gali/partner_clone)**
 * **[Repo](https://github.com/vince-gali/<ASSIGNMENT_REPO>)**
