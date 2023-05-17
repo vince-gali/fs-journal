@@ -396,3 +396,7 @@ in UserController.js
     - add userService.verifyUser(input) // declare verifyUser
 inUserService
 - add let agencies = appState.
+
+
+<!-- SECTION WEEK 4 -->
+<!-- MONDAY LECTURE -->
