@@ -124,3 +124,141 @@ below car card
 - add ${this.deleteButtonIfCarIsYours} (add this where button was originally placed)
 in CarsController
 - add AppState.on('account', _drawCars )
+
+
+
+<!------------------------------------------ 5/17 Lecture (Spellbook) ------------------------------------------>
+
+AuthController => for login
+SpellsController / SpellsService / spellDex: [] (array)
+ActiveSpell: {} (object)
+userSpells / UserSpellsService / UserSpellsController (these are for the users spellbook)
+
+use same env.js settings from gregslist
+
+- AxiosService
+    - in export const api..
+        - rename api to SandboxApi (may need to rename it in authService.js/ accountService / )
+    - (duplicate and rename) import dndApi and baseUrl (reference)
+    - duplicate and rename sandbox.Api.interceptors.request.... to dndApi
+
+create SpellsController
+- export class SpellsController
+    - add constructor()
+in router 
+- replace HomeController with SpellsController
+in SpellsController
+- below constructor
+    - add async getSpellsFromApi(){}
+        - add await
+        - add try catch and pop.error
+in SpellsService
+- add class SpellsService{}
+- add at bottom export const spellsService = ..
+- (in class)    
+    - add async getSpells(){}
+        - add const res = await dndApi.get('/api/spells')
+        - console.log('what is the res', res.data.results) (using .results because the results were a 'dot' deeper)
+in SpellsController
+- in async getSpellsFromApi
+    - add await spellsService.getSpells()
+- in constructor
+    - add this.getSpellsFromApi()
+in AppState
+- add spellDex = []
+in SpellsService
+- add AppState.spellDex = res.data.results
+in SpellsController
+- (setup listener within constructor) AppState.on('spellDex', _drawSpellDex)
+- create function _drawSpellDex()
+    - console.log('spellDex', AppState.spellDex)
+    - add let template = ''
+    - add AppState.spellDex.forEach...(reference)
+in SpellsService
+- add async setActiveSpell()
+    - add try catch and await spellsService.setActiveSpell(index)
+- move async setActiveSpell into class SpellsService
+    - revise const res = await dnd.Api...
+in SpellsController
+- in function _drawSpellDex
+create ActiveSpell.js
+- add export class ActiveSpell
+    - add constructor(data) reference
+    - add data and probably ask for help
+- create getActiveSpellCard()
+    - add return (reference)
+in SpellsService
+- in setActiveSpell
+    - add AppState.activeSpell = new ActiveSpell(res.data)
+In appstate
+- add activeSpell = null
+    - add @type without square brackets off at the end
+in SpellsController
+- in constructor
+    - add AppState.on('activeSpell', activeSpell)
+- create function _drawActiveSpell
+    - add setHTML('activeSpell', AppState.activeSpell.ActiveSpellCardTemplate)
+after adding button to active spell card - making the button only show if you are logged in 
+in ActiveSpells
+- add getSpellButtonBook(){}
+    - if (!AppState.account)
+        return '' (reference)
+create UserSpellsController
+- export class UserSpellsController
+    - constructor
+    - add async addSpell()
+        - add try catch (reference)
+in App.js
+- add UserSpellsController = new UserSpellsController()
+create UserSpellsService.js
+- create class UserSpellsService
+    - addSpell() reference
+        - const res = sandboxApi.post('api/spells', appState.activeSpell)
+- add export const...
+in UserSpellController
+- in async addSpell
+    - add await userSpellsService.addSpell()
+    - in constructor async getUserSpells()
+        - try catch 
+        - await userSpellsService.getUsersSpells()
+in UserSpellsService
+- add getUsersSpells()
+    - const res = await sandboxApi.get('api/spells')
+in UserSpellsController
+- in constructor
+    - AppState.on('account', this.getUserSpells)
+in AppState
+- create userSpells = [] and add @type
+in UserSpellsService
+- in async getUsersSpells
+    - AppState.userSpells = res.data.map(s => new Spell(s) )
+    (rename ActiveSpell to Spell everywhere)
+in UserSpellsController
+- in constructor
+    - add AppState.on('userSpells', _drawUserSpells)
+- create function _drawUserSpells(){}
+    -console.log('my spells', AppState.userSpells)
+in Spell.js
+- create get UserSpellTemplate()
+    - add return with the template (reference)
+in UserSpellsController
+- in _drawUserSpells function   
+    - add let template = ''
+    - add AppState.userSpells.forEach
+    - add template += s.UserSpellTemplate
+    - add setHTML ('userSpells', template)
+in Spell.js 
+- create get preparedCheckbox()
+    - add if(this.prepared) reference
+in UserSpellsController
+- add async togglePrepared(id)
+    - try catch / pop.error / await (reference)
+in UserSpellsService
+- add toggleSpell(id)
+    - const spell = AppState.userSpells.find(s => s.id == id)
+    - spall.prepared = !spell.prepared (flipping a boolean)
+    - const res = await sandboxApi.put('api/spells' + id, spell)
+- in addSpell
+    - add const newSpell = new Spell(res.data)
+    - AppState.userSpells.push(newSpell)
+    - AppState.emit('userSpells')
