@@ -256,9 +256,150 @@ in UserSpellsController
 in UserSpellsService
 - add toggleSpell(id)
     - const spell = AppState.userSpells.find(s => s.id == id)
-    - spall.prepared = !spell.prepared (flipping a boolean)
+    - spell.prepared = !spell.prepared (flipping a boolean vvv)
     - const res = await sandboxApi.put('api/spells' + id, spell)
 - in addSpell
     - add const newSpell = new Spell(res.data)
     - AppState.userSpells.push(newSpell)
     - AppState.emit('userSpells')
+
+
+<!------------------------------------------ 5/18 Lecture (NASA APOD) ------------------------------------------>
+
+bcw create / mvc-auth
+
+in env.js
+- copy and past content from previous lab project
+in AxiosService
+- copy export const api and change baseUrl and change api to nasaApi and add params key (reference)
+create NasaController
+- export class NasaController
+    - constructor
+    - console log
+in router
+- change HomeController to an array and add , NasaController(reference)
+in NasaController
+- add async getPictureOfDay
+    - try catch (reference)
+    - await nasaService.getPictureOfDay
+create NasaService
+- class NasaService
+    - async getPictureOfDay
+    - const res = await nasaApi.get()
+    - console log
+- (at bottom) export const nasaService = ...
+in NasaController
+- in export class
+    - this.getPictureOfDay
+mapping the object vvvv
+create NasaPicture.js
+- export class NasaPicture
+    - constructor
+    - add data
+in NasaService
+- in async getPictureOfDay
+    - console log('creating nasa picture', new NasaPicture(res.data)) 
+in AppState
+- add nasaPicture = null and add the @type
+in NasaService
+- in async getPictureOfDay
+    - add appState.nasaPicture = new NasaPicture(res.data)
+in NasaController
+- create function _drawPicture
+    - const picture = appState.nasaPicture
+    - document.body.style.backgroundImage = `url(${picture.image})`
+- add AppState.on('nasaPicture', _drawPicture)
+- add _drawPicture() in constructor
+- (you can style background image in css)
+getting title,date,description by adding a template
+(build it out in html first then bring it to NasaPicture and create a template)
+in NasaPicture
+- (reference template) and reference css  
+- reference pictureTitle:hover in css
+- add get NasaPictureTemplate
+    - return (add html here)
+in NasaController
+- in function _drawPicture
+    - add setHTML('pictureInformation', picture.NasaPictureTemplate)
+in html
+- in header reference calender form thing
+- add onchange to input
+in NasaController
+- create async selectDat()
+    -try catch
+    - await nasaService.selectDate(date.value)
+in NasaService
+- add async selectDat()
+    -const res = await nasaApi.get('?date=${date}')
+in NasaController
+- in async selectDate
+    - add let dateElem = document.getElementById('date')
+    - let dateValue = dateElem.value
+in NasaService
+- in async selectDate
+    - add AppState.nasaPicture = new NasaPicture(res.data)
+adding the ability to save the current image
+this is where sandbox comes in 
+create Sandbox Controller
+- export class SandboxController
+    - constructor
+create SandboxService
+- class SandboxService
+    - export const sandboxService = new SandboxService()
+in router 
+- add SandboxController
+in SandboxController 
+- create async favoritePicture
+    - let favoriteData = AppState.nasaPicture
+    - try catch
+    - await sandboxService.favoritePicture
+in SandboxService
+- add async favoritePicture(favoriteData)
+    - const rest = await api.post()
+    - console log
+in html
+- add button to save to favorites and add an onclick (reference)
+in sandboxController/service
+- add async quick (reference)
+in AppState
+- add sandboxPictures = []
+in SandboxService
+- in async favoritePicture
+    - add AppState.favoritePicture...
+in SandBoxPicture
+- export class...
+    - constructor()
+        - this.date....(reference)
+in SandboxService
+- in async favoritePicture
+    - add AppState.sandboxPictures.push(new...)
+    - (reference)
+    - AppState.emit('sandboxPictures')
+in sandboxCOntroller
+- add async getFavoritePictures
+    - try catch
+    - await sandboxService.getFavoritePictures()
+In sandboxService
+- add async getFavoritePictures
+    - const res = await api.get('api/apods')
+in sandboxController
+- AppState.on('account', this.getFavoritePictures)
+in sandbox controller
+- in async getFavoritePictures
+    - in console log add res.data.map...
+    - add AppState.sandboxPictures = res.data.map(p => new SandboxPicture(p)) (sandBoxService)
+add an off canvas (also add favorite pictures id)
+in sandbox controller
+- create function _drawFavorite
+    - let template = ''
+    - appState.sandboxPictures.foreach(p => template += p.FavoriteTemplate)
+    - setHTML('favoritePictures', template)
+- below appState.on(account) (reference drawing favorites after login confirmed)
+add remove button
+in sandboxController
+- add async removeFavorite
+    -try catch
+in sandboxService
+- add async removeFavorite(favoriteId)
+    -const res = await api.delete('api/apods/favoriteId?)
+    - AppState.sandboxPictures = AppState.sandboxPictures.filter(p => p.id!=favoriteId)
