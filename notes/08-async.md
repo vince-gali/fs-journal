@@ -403,3 +403,5 @@ in sandboxService
 - add async removeFavorite(favoriteId)
     -const res = await api.delete('api/apods/favoriteId?)
     - AppState.sandboxPictures = AppState.sandboxPictures.filter(p => p.id!=favoriteId)
+
+
