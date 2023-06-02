@@ -295,3 +295,166 @@ MoviesService
     - const savedQuery = AppState.query
     - if(!savedQuery ){reference}
     - AppState.movies = res.data.results.map(m=>new Movie(m))
+
+
+when will i be editing or changing App.vue???
+
+6/1 Lecture - Artsy
+vue-starter 
+
+start server/client
+make sure env is setup correctly so that you can log in
+
+(editing accounts)
+- AccountPage.vue
+    - (reference scoped lang in this page) (scoped means the styling will only affect this page)
+    - reference coverImg: computed....
+    - styles template
+(building a form) - don't build forms inside pages/ instead build forms in another component
+create AccountForm.vue
+- add form into template
+    - @submit.prevent
+- account: computed(()=> AppState.account)
+- test raw data dump
+
+in AccountPage
+- add <AccountForm /> within template
+
+AccountForm (anytime you submit a form, the notes below will always be the same)
+- (editing cover img)
+- const editable = ref(AppState.account)
+- watchEffect(()=> {editable.value = {...AppState.account}})  (spread operator)//NOTE - what does watchEffect do?
+    - return{ editable, handleSubmit{reference}}
+- in template
+    - v-model="editable.name"
+- await accountService.editAccount(editable.value)
+create AccountService
+-  class
+    - (reference getAccount & editAccount)
+- export const accountService = new AccountService()
+- async editAccount
+    - const res = api.put('/account', formData)
+    - AppState.account = ...
+
+getting data to page
+create Project.js
+- export class
+    - constructor(w data)
+
+Create ProjectsService
+- class 
+    - async getProjects
+        - const res = await api.get('api/projects')
+        - logger
+- export const...
+
+HomePage
+- (invoke get projects)
+- await projectsService.getProjects
+- async function getProjects
+    - (reference)
+- onMounted(()=> getProjects())
+- projects: computed(()=> AppState.projects)
+
+AppState
+- projects: [] & @type import
+
+ProjectsService
+- AppState.projects = res.data.map(p => new Project(p))
+
+do raw data dump then build template
+
+create ProjectCar in components
+- vt
+- props: projectProp {reference}
+
+HomePage
+- add v-for="p in projects"
+- <ProjectCard :project="p" />
+- key="p.id"
+
+ProjectCard
+- project.coverImg
+- {{project.title}}
+- reference styling
+- {{project.creator.name}}
+- reference img src within em tags
+- reference .length
+
+App.vue
+- inserts modal (projectModal)
+
+ProjectCard
+@click = "setActiveProject"
+- add data-bs-target="#projectModal"
+- data-bs-toggle ="projectModal"
+- setActiveProject
+    - AppState.activeProject = props.project
+
+App.vue
+- {{project.title}}
+- project: computed(()=> AppState.activeProject)
+- v-for="img in project?.projectImgs"
+- put a v-if project in modal-content you wont need to use an elvis operator
+- add img :src for displaying img
+
+making profile clickable
+ProjectCard
+- wrap project.creator.picture in a router-link :to="(reference)"
+
+router
+- add path: '/profile/:id'
+(reference)
+
+create page (ProfilePage.vue)
+- vt
+- const route = useRoute()
+- async function getProfile
+    - try catch
+    - 
+- onMounted
+    - getProfile()
+
+create ProfileService
+- class
+- export const
+- async getProfile(id)
+    - const res = await api.get('api/profiles/' + id)
+    - logger
+
+ProfilePage
+- await profileService.getProfileById(route.params.id)
+
+AppState
+- activeProfile: null & @type
+
+ProfileService
+- async getProfileById(id)
+    - (reference)
+
+create Profile.js
+- reference
+
+ProfilePage
+- profile: computed(()=> AppState.activeProfile)
+- data dump
+- <ProfileCar />
+
+create ProfileCard
+- prop
+    - profile(reference)
+
+ProfilePage
+- <ProfileCard :profile= "profile"/>
+
+- async function getProjectsByProfile
+    - (reference)
+- onMounted
+    - getProjectsByProfile
+
+ProjectsService
+- async getProjectsByProfile
+    - reference
+
+ProfilePage
+- reference v-for p in projects
